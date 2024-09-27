@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[Project]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY default NEWID(),
+	[TenantId] UNIQUEIDENTIFIER NOT NULL,
+	[CustomerId] UNIQUEIDENTIFIER NOT NULL,
+	[Name] VARCHAR(100) NOT NULL,
+	[StartDate] DATE NULL,
+	[EndDate] DATE NULL,
+	[IsDeleted] BIT NULL,
+	[CreatedBy] UNIQUEIDENTIFIER NOT NULL,
+	[CreatedDate] DATETIMEOFFSET NOT NULL,
+	[ModifiedBy] UNIQUEIDENTIFIER NOT NULL,
+	[ModifiedDate] DATETIMEOFFSET NOT NULL,
+	CONSTRAINT [FK_Project_Tenant_TenantId] FOREIGN KEY ([TenantId]) REFERENCES [dbo].[Tenant] ([Id]) ON DELETE CASCADE,
+	CONSTRAINT [FK_Project_Customer_CustomerId] FOREIGN KEY ([CustomerId]) REFERENCES [dbo].[Customer] ([Id]) ON DELETE CASCADE
+)
+
+GO
+CREATE NONCLUSTERED INDEX [TenentIndex]
+    ON [dbo].[Project]([TenantId]);
+
+
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [NameIndex]
+    ON [dbo].[Project]([Name] ASC) WHERE ([Name] IS NOT NULL);
